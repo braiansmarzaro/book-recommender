@@ -180,5 +180,5 @@ cython_debug/
 .cursorignore
 .cursorindexingignore
 
-chroma_langchain_db/
+#chroma_langchain_db/
 *.ipynb
