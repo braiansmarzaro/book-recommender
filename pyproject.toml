@@ -1,0 +1,14 @@
+[project]
+name = "book-recommender"
+version = "0.1.0"
+description = "A book recommender system using semantic search"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "streamlit>=1.30.0",
+    "pandas>=2.0.0",
+    "python-dotenv>=1.0.0",
+    "langchain-huggingface>=0.0.1",
+    "langchain-chroma>=0.1.0",
+    "langchain-core>=0.1.0",
+]
