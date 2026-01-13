@@ -3,12 +3,18 @@ name = "book-recommender"
 version = "0.1.0"
 description = "A book recommender system using semantic search"
 readme = "README.md"
-requires-python = ">=3.13"
+requires-python = "==3.13.*"
 dependencies = [
-    "streamlit>=1.30.0",
-    "pandas>=2.0.0",
-    "python-dotenv>=1.0.0",
-    "langchain-huggingface>=0.0.1",
-    "langchain-chroma>=0.1.0",
-    "langchain-core>=0.1.0",
+    "streamlit==1.52.2",
+    "pandas==2.3.3",
+    "python-dotenv==1.2.1",
+    "langchain-chroma==1.1.0",
+    "langchain-core==1.2.7",
+    "langchain-huggingface==1.2.0",
+    "langsmith==0.6.2",
+    "chromadb==1.4.0",
+    "sentence-transformers==5.2.0",
+    "huggingface-hub==0.36.0",
+    "kagglehub==0.4.0",
+    "kagglesdk==0.1.14",
 ]
