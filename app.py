@@ -154,8 +154,8 @@ if search_button and search_query:
     with st.spinner("Searching for similar books..."):
         try:
             # Perform vector similarity search
-            results = vector_store.similarity_search(search_query, k=num_results * 3)  # Get more results to filter
-            
+            #results = vector_store.similarity_search(search_query, k=num_results * 3)  # Get more results to filter
+            results = vector_store.max_marginal_relevance_search(search_query, k=num_results, fetch_k=num_results*4)
             # Convert results to dataframe
             results_data = []
             for result in results:
