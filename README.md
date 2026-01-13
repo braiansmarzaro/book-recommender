@@ -59,6 +59,11 @@ streamlit run app.py
 
 4. Open your browser and navigate to the URL shown in the terminal (typically http://localhost:8501)
 
+## Docker
+
+`docker compose up -d`
+
+
 ## Usage
 
 ### Semantic Search
