@@ -180,5 +180,11 @@ cython_debug/
 .cursorignore
 .cursorindexingignore
 
-#chroma_langchain_db/
+# ChromaDB database files
+chroma_langchain_db/
+
+# Jupyter notebooks (may contain sensitive data)
 *.ipynb
+
+# Docker compose with potential secrets
+docker-compose.override.yml

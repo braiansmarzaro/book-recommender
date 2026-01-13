@@ -1,0 +1,27 @@
+services:
+  chromadb:
+    image: chromadb/chroma:latest
+    ports:
+      - "127.0.0.1:8000:8000"
+    environment:
+      # Enable authentication
+      CHROMA_SERVER_AUTH_CREDENTIALS_PROVIDER: "chromadb.auth.token.TokenConfigServerAuthCredentialsProvider"
+      CHROMA_SERVER_AUTH_PROVIDER: "chromadb.auth.token.TokenAuthServerProvider"
+
+      # Define the auth token from environment variable
+      CHROMA_SERVER_AUTH_CREDENTIALS: "${CHROMA_AUTH_TOKEN}"
+
+      # Define the HTTP header name for the token
+      CHROMA_SERVER_AUTH_TOKEN_TRANSPORT_HEADER: "X-Chroma-Token"
+      CHROMA_AUTH_TOKEN_TRANSPORT_HEADER: "X-Chroma-Token"
+      
+      # Persistence (optional, recommended)
+      IS_PERSISTENT: "true"
+      PERSIST_DIRECTORY: "/data"
+
+      # Disable telemetry (optional)
+      ANONYMIZED_TELEMETRY: "false"
+    volumes:
+      # Mount the local chroma_langchain_db directory to persist data
+      - ./chroma_langchain_db:/data
+
