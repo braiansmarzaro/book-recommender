@@ -1,3 +1,5 @@
+from chromadb.config import Settings
+import chromadb
 import streamlit as st
 import pandas as pd
 import os
@@ -7,6 +9,11 @@ from langchain_chroma import Chroma
 
 # Load environment variables
 load_dotenv()
+
+CHROMA_HOST = os.getenv("CHROMA_HOST")
+CHROMA_PORT = os.getenv("CHROMA_PORT")
+AUTH_TOKEN = os.getenv("CHROMA_AUTH_TOKEN")  # Ensure this environment variable is set
+AUTH_HEADER = os.getenv("AUTH_HEADER")  # Must match CHROMA_SERVER_AUTH_TOKEN_TRANSPORT_HEADER
 
 # Page configuration
 st.set_page_config(
@@ -24,11 +31,22 @@ def load_embeddings():
 @st.cache_resource
 def load_vector_store(_embeddings):
     """Load the Chroma vector store"""
-    db_path = "./chroma_langchain_db"
+    # Create the ChromaDB HTTP client
+    chroma_client = chromadb.HttpClient(
+        host=CHROMA_HOST,
+        port=int(CHROMA_PORT),
+        settings=Settings(
+            chroma_client_auth_provider="chromadb.auth.token_authn.TokenAuthClientProvider",
+            chroma_client_auth_credentials=AUTH_TOKEN,
+        ),
+        headers={AUTH_HEADER: AUTH_TOKEN} if AUTH_TOKEN else None,
+    )
+    
+    # Return LangChain Chroma wrapper for MMR support
     return Chroma(
+        client=chroma_client,
         collection_name="books",
-        embedding_function=_embeddings,
-        persist_directory=db_path
+        embedding_function=_embeddings
     )
 
 @st.cache_data
@@ -53,6 +71,8 @@ df = load_dataframe()
 # Title
 st.title("📚 Book Recommender System")
 st.markdown("Search for books and apply filters to find your next great read!")
+st.markdown("Key technologies used: `LangChain`, `ChromaDB`, `HuggingFace Embeddings`")
+st.markdown("Deployed with `Docker compose`, `Streamlit` and `Nginx`")
 
 # Sidebar filters
 st.sidebar.header("🔍 Filters")
@@ -165,7 +185,6 @@ if search_button and search_query:
                     'Category': result.metadata.get('category', ''),
                     'Publisher': result.metadata.get('publisher', ''),
                     'Price Starting With ($)': result.metadata['price'],
-                    'Publish Date (Month)': result.metadata['publish_month'],
                     'Publish Date (Year)': result.metadata['publish_year']
                 })
             
@@ -250,4 +269,9 @@ if st.checkbox("Show filtered dataset (without semantic search)"):
 
 # Footer
 st.markdown("---")
-st.markdown("Built with ❤️ using Streamlit, LangChain, and ChromaDB")
+st.markdown("""
+    Built with ❤️ by Deivid Smarzaro 
+    <a href="https://www.linkedin.com/in/deividsmarzaro/">
+    <img src="https://github.com/ultralytics/assets/raw/main/social/logo-social-linkedin.png" width="3%" alt="Deivid Braian LinkedIn" style="max-width: 100%;"></a>
+""", unsafe_allow_html=True)
+
