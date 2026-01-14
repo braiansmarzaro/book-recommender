@@ -146,16 +146,18 @@ def apply_filters(dataframe):
         filtered_df = filtered_df[filtered_df['Category'] == selected_category]
     
     # Price filter
-    filtered_df = filtered_df[
-        (filtered_df['Price Starting With ($)'] >= price_range[0]) &
-        (filtered_df['Price Starting With ($)'] <= price_range[1])
-    ]
+    if 'Price Starting With ($)' in filtered_df.columns:
+        filtered_df = filtered_df[
+            (filtered_df['Price Starting With ($)'] >= price_range[0]) &
+            (filtered_df['Price Starting With ($)'] <= price_range[1])
+        ]
     
     # Year filter
-    filtered_df = filtered_df[
-        (filtered_df['Publish Date (Year)'] >= year_range[0]) &
-        (filtered_df['Publish Date (Year)'] <= year_range[1])
-    ]
+    if 'Publish Date (Year)' in filtered_df.columns:
+        filtered_df = filtered_df[
+            (filtered_df['Publish Date (Year)'] >= year_range[0]) &
+            (filtered_df['Publish Date (Year)'] <= year_range[1])
+        ]
     
     # Publisher filter
     if selected_publisher != 'All':
@@ -203,7 +205,7 @@ if search_button and search_query:
                 # Display as a styled dataframe
                 st.dataframe(
                     filtered_results,
-                    use_container_width=True,
+                    width='stretch',
                     hide_index=True,
                     column_config={
                         "Title": st.column_config.TextColumn("Title", width="large"),
