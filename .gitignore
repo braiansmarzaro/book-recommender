@@ -189,3 +189,4 @@ chroma_langchain_db/
 # Docker compose with potential secrets
 docker-compose.override.yml
 nohup.out
+data/BooksDatasetClean.csv

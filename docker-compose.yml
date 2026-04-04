@@ -1,6 +1,11 @@
 services:
   chromadb:
     image: chromadb/chroma:latest
+    mem_limit : 512m
+    deploy: # Recommended for newer Compose file versions (Compose Specification)
+      resources:
+        limits:
+          memory: 512M # Sets a hard limit of 512MB
     ports:
       - "127.0.0.1:8000:8000"
     environment:
@@ -24,4 +29,16 @@ services:
     volumes:
       # Mount the local chroma_langchain_db directory to persist data
       - ./chroma_langchain_db:/data
+
+  streamlit:
+    build: .
+    container_name: book-recommender-app
+    env_file: .env
+    ports:
+      - "8501:8501"
+    depends_on:
+      - chromadb
+    volumes:
+      - ./:/app
+    restart: unless-stopped
 
