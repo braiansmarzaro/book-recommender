@@ -37,10 +37,12 @@ services:
     environment:
       CHROMA_HOST: chromadb
     ports:
-      - "8501:8501"
+      - "127.0.0.1:8501:8501"
     depends_on:
       - chromadb
     volumes:
       - ./:/app
+      - ~/.cache/huggingface:/root/.cache/huggingface
+      - ~/.cache/kagglehub:/root/.cache/kagglehub
     restart: unless-stopped
 
