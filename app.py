@@ -63,16 +63,17 @@ def load_dataframe():
         df['Authors'] = df['Authors'].str[3:]
     return df
 
-# Load data
-embeddings = load_embeddings()
-vector_store = load_vector_store(embeddings)
-df = load_dataframe()
-
 # Title
 st.title("📚 Book Recommender System")
 st.markdown("Search for books and apply filters to find your next great read!")
 st.markdown("Key technologies used: `LangChain`, `ChromaDB`, `HuggingFace Embeddings`")
 st.markdown("Deployed with `Docker compose`, `Streamlit` and `Nginx`")
+
+# Lazy-load data after the UI is rendered
+with st.spinner("Loading model and connecting to database..."):
+    embeddings = load_embeddings()
+    vector_store = load_vector_store(embeddings)
+    df = load_dataframe()
 
 # Sidebar filters
 st.sidebar.header("🔍 Filters")
